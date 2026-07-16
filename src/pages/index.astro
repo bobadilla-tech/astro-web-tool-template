@@ -1,0 +1,53 @@
+---
+import AdContainer from "../components/layout/AdContainer.astro";
+import ToolControls from "../components/tool/ToolControls.astro";
+import ToolOutput from "../components/tool/ToolOutput.astro";
+import { site } from "../config/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title={site.name}
+  description="A free, fast, no-sign-up text case converter — one example of a Bobadilla Tech web tool."
+  keywords={["text case converter", "case converter", site.name]}
+>
+  <div class="container">
+    <ToolControls />
+    <ToolOutput />
+
+    <!-- Example ad-slot integration point — no-ops until site.ts has a real adsenseClientId -->
+    <AdContainer adSlot="1234567890" />
+
+    <section class="about-section glass-card">
+      <p>
+        This is the example tool that ships with the Bobadilla Tech Astro web tool template. Replace
+        <code>src/lib/case-converter.ts</code>, <code>src/components/tool/*</code>, and
+        <code>src/scripts/tool-interactive.ts</code> with your own tool's logic and UI first.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<script src="../scripts/tool-interactive.ts"></script>
+
+<style>
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .about-section {
+    margin-top: 2rem;
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+  }
+
+  .about-section code {
+    font-family: var(--font-mono);
+    background: var(--bg-secondary);
+    padding: 0.125rem 0.375rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+  }
+</style>

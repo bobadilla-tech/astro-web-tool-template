@@ -1,0 +1,143 @@
+---
+import { Code } from "astro:components";
+
+interface Props {
+  command: string;
+}
+
+const { command } = Astro.props;
+---
+
+<div class="terminal">
+  <div class="terminal-chrome">
+    <span class="dot dot-red"></span>
+    <span class="dot dot-yellow"></span>
+    <span class="dot dot-green"></span>
+  </div>
+  <div class="terminal-body">
+    <span class="prompt">$</span>
+    <span class="command"><Code code={command} lang="bash" theme="dracula" inline wrap /></span>
+    <button class="copy-btn" type="button" data-command={command} aria-label="Copy command">
+      <svg class="icon-copy" width="16" height="16" viewBox="0 0 20 20" fill="none">
+        <path d="M8 3H5a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-3M13 3h4v4M19 3l-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-check" width="16" height="16" viewBox="0 0 20 20" fill="none">
+        <path d="M4 10l4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.terminal .copy-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const command = btn.getAttribute('data-command') || '';
+      try {
+        await navigator.clipboard.writeText(command);
+        btn.classList.add('copied');
+        setTimeout(() => btn.classList.remove('copied'), 1500);
+      } catch (error) {
+        console.error('Copy failed:', error);
+      }
+    });
+  });
+</script>
+
+<style>
+  .terminal {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: #0b0505;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .terminal-chrome {
+    display: flex;
+    gap: 0.4rem;
+    padding: 0.6rem 0.75rem;
+    background: #1a1210;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .dot-red {
+    background: #ef4444;
+  }
+
+  .dot-yellow {
+    background: #f59e0b;
+  }
+
+  .dot-green {
+    background: #10b981;
+  }
+
+  .terminal-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .prompt {
+    color: #34d399;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    flex-shrink: 0;
+    line-height: 1.6;
+  }
+
+  .command {
+    flex: 1;
+    min-width: 0;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .command :global(code) {
+    background: none !important;
+    padding: 0 !important;
+    white-space: pre-wrap !important;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.6;
+  }
+
+  .copy-btn {
+    flex-shrink: 0;
+    display: flex;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.4rem;
+    cursor: pointer;
+    color: #9c9c98;
+    transition: all var(--transition-fast);
+  }
+
+  .copy-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+  }
+
+  .icon-check {
+    display: none;
+  }
+
+  .copy-btn.copied {
+    color: #34d399;
+  }
+
+  .copy-btn.copied .icon-copy {
+    display: none;
+  }
+
+  .copy-btn.copied .icon-check {
+    display: block;
+  }
+</style>

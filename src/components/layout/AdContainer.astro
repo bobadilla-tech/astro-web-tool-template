@@ -1,0 +1,79 @@
+---
+import { isAdSenseConfigured, site } from "../../config/site";
+
+interface Props {
+  adSlot: string;
+  adFormat?: "auto" | "rectangle" | "horizontal" | "vertical";
+  adStyle?: "display:block" | "display:inline-block";
+  className?: string;
+}
+
+const {
+  adSlot,
+  adFormat = "auto",
+  adStyle = "display:block",
+  className = "",
+} = Astro.props;
+
+const adClient = site.adsenseClientId;
+const hasAdClient = isAdSenseConfigured;
+---
+
+{
+  hasAdClient && (
+    <div class={`ad-container ${className}`}>
+      <div class="ad-label">Advertisement</div>
+      <script
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adClient}`}
+        crossorigin="anonymous"
+      />
+      <ins
+        class="adsbygoogle"
+        style={adStyle}
+        data-ad-client={adClient}
+        data-ad-slot={adSlot}
+        data-ad-format={adFormat}
+        data-full-width-responsive="true"
+      />
+      <script is:inline>
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  )
+}
+
+<style>
+  .ad-container {
+    margin: 2rem 0;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100px;
+  }
+
+  .ad-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    opacity: 0.6;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  .adsbygoogle {
+    background: transparent;
+  }
+
+  /* Responsive Ad Styles */
+  @media (max-width: 768px) {
+    .ad-container {
+      margin: 1.5rem 0;
+      padding: 0.75rem;
+    }
+  }
+</style>

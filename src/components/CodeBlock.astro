@@ -1,0 +1,108 @@
+---
+import { Code } from "astro:components";
+
+interface Props {
+  code: string;
+  lang: string;
+}
+
+const { code, lang } = Astro.props;
+---
+
+<div class="code-example">
+  <button class="copy-btn" type="button" data-code={code} aria-label="Copy code">
+    <svg class="icon-copy" width="16" height="16" viewBox="0 0 20 20" fill="none">
+      <path d="M8 3H5a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-3M13 3h4v4M19 3l-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <svg class="icon-check" width="16" height="16" viewBox="0 0 20 20" fill="none">
+      <path d="M4 10l4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <Code code={code} lang={lang as any} themes={{ light: 'github-light', dark: 'github-dark' }} defaultColor={false} wrap />
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.code-example .copy-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const code = btn.getAttribute('data-code') || '';
+      try {
+        await navigator.clipboard.writeText(code);
+        btn.classList.add('copied');
+        setTimeout(() => btn.classList.remove('copied'), 1500);
+      } catch (error) {
+        console.error('Copy failed:', error);
+      }
+    });
+  });
+</script>
+
+<style>
+  .code-example {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+  }
+
+  .code-example :global(pre) {
+    margin: 0;
+    padding: 1.25rem;
+    padding-right: 3rem;
+    background: var(--bg-secondary) !important;
+  }
+
+  .code-example :global(.astro-code),
+  .code-example :global(.astro-code span) {
+    color: var(--shiki-light) !important;
+    background-color: transparent !important;
+    font-style: var(--shiki-light-font-style) !important;
+    font-weight: var(--shiki-light-font-weight) !important;
+    text-decoration: var(--shiki-light-text-decoration) !important;
+  }
+
+  html[data-theme='dark'] .code-example :global(.astro-code),
+  html[data-theme='dark'] .code-example :global(.astro-code span) {
+    color: var(--shiki-dark) !important;
+    background-color: transparent !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: flex;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.4rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+  }
+
+  .copy-btn:hover {
+    background: var(--bg-glass);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .icon-check {
+    display: none;
+  }
+
+  .copy-btn.copied {
+    color: #10b981;
+    border-color: #10b981;
+  }
+
+  .copy-btn.copied .icon-copy {
+    display: none;
+  }
+
+  .copy-btn.copied .icon-check {
+    display: block;
+  }
+</style>

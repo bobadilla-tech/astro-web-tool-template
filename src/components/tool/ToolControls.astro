@@ -1,0 +1,105 @@
+---
+---
+
+<div class="tool-controls glass-card">
+  <h1 class="tool-title">
+    <span class="text-gradient">Text Case</span> Converter
+  </h1>
+  <p class="tool-subtitle">Paste some text, pick a case, convert it</p>
+
+  <form id="tool-form" class="control-form">
+    <div class="control-group">
+      <label for="input-text">Text</label>
+      <textarea id="input-text" name="text" rows="6" placeholder="Type or paste text here..." required></textarea>
+    </div>
+
+    <div class="control-group">
+      <label for="case-type">Case</label>
+      <select id="case-type" name="caseType">
+        <option value="upper" selected>UPPER CASE</option>
+        <option value="lower">lower case</option>
+        <option value="title">Title Case</option>
+        <option value="camel">camelCase</option>
+        <option value="snake">snake_case</option>
+        <option value="kebab">kebab-case</option>
+      </select>
+    </div>
+
+    <button type="submit" class="button button-primary convert-button">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Convert
+      <span class="keyboard-hint" id="shortcut-convert">Ctrl+Enter</span>
+    </button>
+  </form>
+</div>
+
+<style>
+  .tool-controls {
+    margin-bottom: 2rem;
+  }
+
+  .tool-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .tool-subtitle {
+    text-align: center;
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+  }
+
+  .control-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .control-group label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+  }
+
+  .control-group textarea {
+    resize: vertical;
+    font-family: var(--font-sans);
+  }
+
+  .convert-button {
+    width: 100%;
+    font-size: 1.125rem;
+    padding: 1rem 2rem;
+    position: relative;
+  }
+
+  .keyboard-hint {
+    position: absolute;
+    right: 1rem;
+    font-size: 0.75rem;
+    opacity: 0.7;
+    padding: 0.25rem 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+  }
+
+  @media (max-width: 768px) {
+    .tool-title {
+      font-size: 2rem;
+    }
+
+    .keyboard-hint {
+      display: none;
+    }
+  }
+</style>

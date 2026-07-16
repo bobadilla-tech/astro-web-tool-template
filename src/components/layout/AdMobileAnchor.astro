@@ -1,0 +1,108 @@
+---
+import { isAdSenseConfigured, site } from "../../config/site";
+
+interface Props {
+  adSlot: string;
+}
+
+const { adSlot } = Astro.props;
+
+const adClient = site.adsenseClientId;
+const hasAdClient = isAdSenseConfigured;
+---
+
+{
+  hasAdClient && (
+    <div class="ad-mobile-anchor" id="ad-mobile-anchor">
+      <button class="ad-anchor-close" id="ad-anchor-close" aria-label="Close ad">&times;</button>
+      <div class="ad-label">Advertisement</div>
+      <script
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adClient}`}
+        crossorigin="anonymous"
+      />
+      <ins
+        class="adsbygoogle"
+        style="display:block"
+        data-ad-client={adClient}
+        data-ad-slot={adSlot}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+      <script is:inline>
+        if (window.matchMedia('(max-width: 768px)').matches) {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        }
+      </script>
+    </div>
+  )
+}
+
+{
+  hasAdClient && (
+    <script>
+      const anchor = document.getElementById('ad-mobile-anchor');
+      const closeButton = document.getElementById('ad-anchor-close');
+
+      if (anchor && sessionStorage.getItem('ad-anchor-dismissed') === 'true') {
+        anchor.style.display = 'none';
+      }
+
+      closeButton?.addEventListener('click', () => {
+        if (anchor) anchor.style.display = 'none';
+        sessionStorage.setItem('ad-anchor-dismissed', 'true');
+      });
+    </script>
+  )
+}
+
+<style>
+  .ad-mobile-anchor {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .ad-mobile-anchor {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: var(--bg-primary);
+      border-top: 1px solid var(--border);
+      padding: 0.5rem;
+      box-shadow: 0 -4px 16px var(--shadow);
+    }
+  }
+
+  .ad-anchor-close {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+
+  .ad-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    opacity: 0.6;
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.05em;
+  }
+
+  .adsbygoogle {
+    width: 100%;
+    max-width: 320px;
+    min-height: 50px;
+  }
+</style>

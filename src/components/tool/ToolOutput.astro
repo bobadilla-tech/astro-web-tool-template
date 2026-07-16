@@ -1,0 +1,139 @@
+---
+---
+
+<div class="output-container glass-card">
+  <div class="output-header">
+    <h2>Result</h2>
+    <div class="output-actions">
+      <button id="copy-button" class="button button-secondary copy-button">
+        <svg id="copy-icon" width="18" height="18" viewBox="0 0 20 20" fill="none">
+          <path d="M8 3H5a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-3M13 3h4v4M19 3l-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span id="copy-text">Copy to Clipboard</span>
+        <span class="keyboard-hint" id="shortcut-copy">Ctrl+K</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="output-wrapper">
+    <div id="output" class="output-text">
+      <p class="placeholder-text">Enter text above and hit "Convert"...</p>
+    </div>
+  </div>
+
+  <div class="output-stats">
+    <span id="char-count">0 characters</span>
+  </div>
+</div>
+
+<style>
+  .output-container {
+    margin-bottom: 3rem;
+  }
+
+  .output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .output-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  .output-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .copy-button {
+    position: relative;
+  }
+
+  .keyboard-hint {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    padding: 0.25rem 0.5rem;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius-sm);
+  }
+
+  .output-wrapper {
+    position: relative;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    min-height: 150px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .output-text {
+    padding: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: var(--font-sans);
+  }
+
+  .placeholder-text {
+    color: var(--text-secondary);
+    opacity: 0.6;
+    font-style: italic;
+  }
+
+  .output-stats {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+  }
+
+  /* Copy Success Animation */
+  @keyframes copySuccess {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0.95);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .copy-button.success {
+    background: #10b981 !important;
+    color: white !important;
+    border-color: #10b981 !important;
+    animation: copySuccess 0.3s ease;
+  }
+
+  @media (max-width: 768px) {
+    .output-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .output-actions {
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .output-actions button {
+      width: 100%;
+    }
+
+    .keyboard-hint {
+      display: none;
+    }
+  }
+</style>

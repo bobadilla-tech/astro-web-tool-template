@@ -1,0 +1,107 @@
+---
+import { isGaConfigured, site } from "../../config/site";
+
+interface Props {
+  title: string;
+  description: string;
+  keywords: string[];
+  featureList?: string[];
+  image?: string;
+  canonical?: string;
+}
+
+const {
+  title,
+  description,
+  keywords,
+  featureList = [],
+  image,
+  canonical,
+} = Astro.props;
+
+const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site);
+const socialImage = image
+  ? new URL(image, Astro.site)
+  : new URL("/images/og-image.png", Astro.site);
+---
+
+<!-- Primary Meta Tags -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="keywords" content={keywords.join(', ')} />
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={socialImage} />
+<meta property="og:site_name" content={site.name} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalURL} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={socialImage} />
+
+<!-- Structured Data (JSON-LD) -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "url": canonicalURL.toString(),
+  "description": description,
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": site.brand.name,
+    "url": site.brand.url
+  },
+  "image": socialImage.toString(),
+  "screenshot": socialImage.toString(),
+  ...(featureList.length > 0 ? { "featureList": featureList } : {})
+})} />
+
+<!-- Performance -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+<link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+<!-- Fonts: Sora (headings) + Space Grotesk (body) — matches bobadilla.tech -->
+<link
+  href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- Theme Color -->
+<meta name="theme-color" content="#c9a916" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0b0505" media="(prefers-color-scheme: dark)" />
+
+<!-- Google Analytics (GA4) — only loads once a real gaId is configured -->
+{isGaConfigured && (
+  <>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${site.gaId}`}></script>
+    <script is:inline define:vars={{ gaId: site.gaId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', gaId);
+    </script>
+  </>
+)}
