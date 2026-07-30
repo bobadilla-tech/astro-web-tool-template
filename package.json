@@ -23,7 +23,7 @@
     "node": ">=26"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.6",
+    "@astrojs/check": "^0.9.10",
     "@biomejs/biome": "2.5.4",
     "astro": "^5.17.1",
     "typescript": "^5.9.3"
