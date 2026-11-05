@@ -7,9 +7,9 @@ real IDs in `src/config/site.ts`.
 
 ## Placements
 
-| Placement                     | Component        | Where                                          |
-| ------------------------------ | ---------------- | ----------------------------------------------- |
-| In-content rectangle          | `AdContainer`    | `index.astro`, below the example tool           |
+| Placement                     | Component        | Where                                               |
+| ----------------------------- | ---------------- | --------------------------------------------------- |
+| In-content rectangle          | `AdContainer`    | `index.astro`, below the example tool               |
 | Mobile anchor (bottom banner) | `AdMobileAnchor` | sitewide via `BaseLayout`, mobile only, dismissible |
 
 Add more `<AdContainer adSlot="...">` calls to other pages as needed.
